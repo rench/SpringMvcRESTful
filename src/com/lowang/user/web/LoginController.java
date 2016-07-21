@@ -21,17 +21,17 @@ public class LoginController {
      * 登录页面.
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String loginIndex() {
-        return "login";
+    @ResponseBody
+    public String loginA() {
+        return loginB();
     }
     /**
      * 登录页面.
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseBody
-    public Response<String> login() {
-        Response<String> res = new Response<>(ERROR.PARAM_ERROR, "参数不能为空");
-        return res;
+    public String loginB() {
+        return "use post method";
     }
     /**
      * 登录页面.
