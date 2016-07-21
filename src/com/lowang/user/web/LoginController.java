@@ -1,14 +1,17 @@
 package com.lowang.user.web;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.lowang.core.Const;
 import com.lowang.core.model.Response;
 import com.lowang.core.model.Response.ERROR;
+import com.lowang.user.service.IUserInfoService;
 
 /**
  * 登录类.
@@ -17,6 +20,9 @@ import com.lowang.core.model.Response.ERROR;
 @Controller("loginController")
 @RequestMapping("/api/login")
 public class LoginController {
+    private static final Logger LOG = Logger.getLogger(LoginController.class);
+    @Resource
+    private IUserInfoService userInfoService;
     /**
      * 登录页面.
      */
@@ -53,10 +59,12 @@ public class LoginController {
             res = new Response<>(ERROR.PARAM_ERROR, "用户名或者密码为空");
             return res.toJSONString();
         }
-        if (Const.username.equalsIgnoreCase(username) && Const.password.equalsIgnoreCase(password)) {
+        try {
+            userInfoService.login(username, password);
             res = new Response<>("OK");
-        } else {
-            res = new Response<>(ERROR.AUTH_ERROR, "用户名或者密码错误");
+            LOG.info("用户登录成功:" + res.toJSONString());
+        } catch (Exception e) {
+            res = new Response<>(ERROR.SYS_ERROR, e.getMessage());
         }
         return res.toJSONString();
     }
