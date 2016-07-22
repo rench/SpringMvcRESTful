@@ -1,6 +1,7 @@
 package com.lowang.user.web;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -9,8 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.lowang.core.Const;
+import com.lowang.core.exception.AppException;
+import com.lowang.core.exception.BizException;
 import com.lowang.core.model.Response;
 import com.lowang.core.model.Response.ERROR;
+import com.lowang.core.model.bo.UserInfoBo;
 import com.lowang.user.service.IUserInfoService;
 
 /**
@@ -18,7 +23,7 @@ import com.lowang.user.service.IUserInfoService;
  * @author Lo&Wang
  */
 @Controller("loginController")
-@RequestMapping("/api/login")
+@RequestMapping("/api")
 public class LoginController {
     private static final Logger LOG = Logger.getLogger(LoginController.class);
     @Resource
@@ -26,33 +31,17 @@ public class LoginController {
     /**
      * 登录页面.
      */
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
     @ResponseBody
     public String loginA() {
-        return loginB();
-    }
-    /**
-     * 登录页面.
-     */
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    @ResponseBody
-    public String loginB() {
         return "use post method";
     }
     /**
      * 登录页面.
      */
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(value = {"/login"}, method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public String loginp(String username, String password) {
-        return this.login(username, password);
-    }
-    /**
-     * 登录页面.
-     */
-    @RequestMapping(value = "/", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
-    @ResponseBody
-    public String login(String username, String password) {
+    public String login(String username, String password, HttpServletRequest req) {
         Response<String> res;
         if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
             // 用户名或者密码错误
@@ -60,10 +49,18 @@ public class LoginController {
             return res.toJSONString();
         }
         try {
-            userInfoService.login(username, password);
+            UserInfoBo user = userInfoService.login(username, password);
+            req.getSession(true).setAttribute(Const.SESSION_USER, user);
             res = new Response<>("OK");
             LOG.info("用户登录成功:" + res.toJSONString());
+        } catch (BizException e) {
+            e.printStackTrace();
+            res = new Response<>(ERROR.PARAM_ERROR, e.getMessage());
+        } catch (AppException e) {
+            e.printStackTrace();
+            res = new Response<>(ERROR.PARAM_ERROR, e.getMessage());
         } catch (Exception e) {
+            e.printStackTrace();
             res = new Response<>(ERROR.SYS_ERROR, e.getMessage());
         }
         return res.toJSONString();

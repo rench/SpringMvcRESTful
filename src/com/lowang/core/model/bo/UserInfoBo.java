@@ -22,6 +22,10 @@ public class UserInfoBo implements Serializable {
     private Date modifytime;// 修改时间
     private Byte isdisable;// 是否禁用,0:启用/1:禁用
     private Byte isdelete;// 是否删除,0:未删除/1:已删除
+    /**
+     * 学生信息.
+     */
+    private StudentInfoBo studentInfoBo; // 学生信息
     public Long getKeyid() {
         return keyid;
     }
@@ -81,5 +85,19 @@ public class UserInfoBo implements Serializable {
     }
     public void setIsdelete(Byte isdelete) {
         this.isdelete = isdelete;
+    }
+    /**
+     * 设置 学生信息.
+     * @return studentInfoBo 学生信息.
+     */
+    public StudentInfoBo getStudentInfoBo() {
+        return studentInfoBo;
+    }
+    /**
+     * 获取 学生信息.
+     * @param studentInfoBo 学生信息.
+     */
+    public void setStudentInfoBo(StudentInfoBo studentInfoBo) {
+        this.studentInfoBo = studentInfoBo;
     }
 }

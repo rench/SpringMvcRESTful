@@ -10,6 +10,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -75,7 +76,7 @@ public class UserInfoServiceImpl implements IUserInfoService {
     }
     @Override
     public UserInfoBo login(String username, String password) throws Exception {
-        List<UserInfoBo> list = jdbcTemplate.queryForList("select * from userinfo where username=?", new Object[]{username}, UserInfoBo.class);
+        List<UserInfoBo> list = jdbcTemplate.query("select * from userinfo where username=?", new Object[]{username}, new BeanPropertyRowMapper<UserInfoBo>(UserInfoBo.class));
         if (list == null || list.isEmpty()) {
             throw new AppException("用户不存在");
         }

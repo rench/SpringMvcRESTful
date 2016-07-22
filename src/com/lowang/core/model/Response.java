@@ -3,6 +3,7 @@ package com.lowang.core.model;
 import java.io.Serializable;
 
 import com.alibaba.fastjson.JSON;
+import com.lowang.core.Const;
 
 /**
  * 通用响应类.
@@ -102,7 +103,7 @@ public class Response<T> implements Serializable {
      * @return .
      */
     public String toJSONString() {
-        return JSON.toJSONString(this);
+        return JSON.toJSONString(this, Const.mapping);
     }
     public interface ERROR {
         /**

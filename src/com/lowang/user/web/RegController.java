@@ -21,19 +21,14 @@ import com.lowang.user.service.IUserInfoService;
  * @author Lo&Wang
  */
 @Controller("regController")
-@RequestMapping("/api/users/reg")
+@RequestMapping("/api")
 public class RegController {
     private static final Logger LOG = Logger.getLogger(RegController.class);
     @Resource
     private IUserInfoService userInfoService;
-    @RequestMapping(value = "", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = {"/reg"}, method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public String regA(String username, String password, String qq) {
-        return this.regB(username, password, qq);
-    }
-    @RequestMapping(value = "/", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
-    @ResponseBody
-    public String regB(String username, String password, String qq) {
+    public String reg(String username, String password, String qq) {
         Response<UserRegResponse> res;
         if (StringUtils.isBlank(username) || StringUtils.isBlank(password) || StringUtils.isBlank(qq)) {
             res = new Response<UserRegResponse>(ERROR.PARAM_ERROR, "注册信息不完整");
