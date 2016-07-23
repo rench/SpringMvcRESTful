@@ -1,12 +1,17 @@
 package com.lowang.user.web;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicLong;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,6 +32,13 @@ import com.lowang.user.service.IStudentInfoService;
 @Controller("studentController")
 @RequestMapping("/api/student")
 public class StudentInfoController {
+    private AtomicLong atcl = new AtomicLong(100);
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));   // true:允许输入空值，false:不能为空值
+    }
     private static final Logger LOG = Logger.getLogger(LoginController.class);
     @Resource
     private IStudentInfoService studentInfoService;
@@ -46,7 +58,7 @@ public class StudentInfoController {
         if (user == null) {
             // return new Response<StudentInfoBo>(ERROR.AUTH_ERROR, "登录已超时,请重新登录").toJSONString();
         }
-        studentInfoBo.setUserid(1l);
+        studentInfoBo.setUserid(atcl.getAndIncrement());
         // 2.新增
         try {
             studentInfoBo.setAddtime(new Date());

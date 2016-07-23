@@ -3,6 +3,8 @@ package com.lowang.core.model.bo;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 /**
  * 学生信息登记表.
  * @author Lo&Wang
@@ -35,6 +37,7 @@ public class StudentInfoBo implements Serializable {
     /**
      * @出生日期
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
     /**
      * @手机号码

@@ -23,6 +23,10 @@
     <mvc:interceptors>
         <bean class="com.lowang.core.interceptor.SystemInterceptor" />
     </mvc:interceptors>
+    <mvc:resources location="/assert/" mapping="/assert/**" />
+    <mvc:resources location="/image/" mapping="/image/**" />
+    <mvc:resources location="/css/" mapping="/css/**" />
+    <mvc:resources location="/js/" mapping="/js/**" />
     <mvc:default-servlet-handler />
-    <import resource="app-context-datasource.xml"/>
+    <import resource="app-context-datasource.xml" />
 </beans>

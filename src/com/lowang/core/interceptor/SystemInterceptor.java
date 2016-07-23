@@ -24,10 +24,14 @@ public class SystemInterceptor extends HandlerInterceptorAdapter {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Headers", "Content-Type, Content-Length, Authorization, Accept, X-Requested-With");
+        response.addHeader("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, OPTIONS");
         // 后台session控制
         String[] noFilters = new String[]{"/api/login", "/api/reg"};
         String uri = request.getServletPath();
-        if(1==1) return true;
+        if (1 == 1)
+            return true;
         if (Arrays.asList(noFilters).contains(uri)) {
             return true;
         }
@@ -40,5 +44,9 @@ public class SystemInterceptor extends HandlerInterceptorAdapter {
             return false;
         }
         return super.preHandle(request, response, handler);
+    }
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        super.afterCompletion(request, response, handler, ex);
     }
 }
