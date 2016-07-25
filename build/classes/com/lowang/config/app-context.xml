@@ -15,14 +15,5 @@
     <bean
         class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" />
     <context:component-scan base-package="com.lowang" />
-    <mvc:annotation-driven>
-        <mvc:message-converters>
-            <bean class="com.lowang.core.UTF8StringHttpMessageConverter" />
-        </mvc:message-converters>
-    </mvc:annotation-driven>
-    <mvc:interceptors>
-        <bean class="com.lowang.core.interceptor.SystemInterceptor" />
-    </mvc:interceptors>
-    <mvc:default-servlet-handler />
     <import resource="app-context-datasource.xml"/>
 </beans>
