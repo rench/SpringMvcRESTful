@@ -33,13 +33,13 @@ import com.lowang.user.service.IStudentInfoService;
 @RequestMapping("/api/student")
 public class StudentInfoController {
     private AtomicLong atcl = new AtomicLong(100);
-    @InitBinder
+/*    @InitBinder
     public void initBinder(WebDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));   // true:允许输入空值，false:不能为空值
-    }
-    private static final Logger LOG = Logger.getLogger(LoginController.class);
+    }*/
+    private static final Logger LOG = Logger.getLogger(StudentInfoController.class);
     @Resource
     private IStudentInfoService studentInfoService;
     /**
